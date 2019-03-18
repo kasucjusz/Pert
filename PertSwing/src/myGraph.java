@@ -21,13 +21,7 @@ public class myGraph {
     private final Map<String, Double> d = new HashMap<String, Double>();
     private final Map<String, String> pred = new HashMap<String, String>();
 
-    /**
-     * Inner class to implement the {@link Comparator} class for the prioritised
-     * queue. The class overides the compare method and defines the comparisson
-     * criteria for each of the vertices added in the unsettled Queue. The
-     * benefit of this process is that by polling the queue it always returns
-     * the object with the smallest weight.
-     */
+
     private final Comparator<String> minDistanceComparator = new Comparator<String>() {
 
         @Override
@@ -49,14 +43,7 @@ public class myGraph {
 
     /* stuff for the critical path method */
 
-    /**
-     * constructor that takes the maximal dimension of the Graph as argument
-     *
-     * @param maxVertices
-     *            Maximum number of vertices
-     * @param maEdges
-     *            Maximum number of edges
-     */
+
     myGraph(int maxVertices, int maxEdges) {
         // remember passed parameters
         this.maxVertices = maxVertices;
@@ -84,13 +71,7 @@ public class myGraph {
         print = false;
     }
 
-    /**
-     * Add a vertex to the Graph. Tests that the vertex has not been defined
-     * already and that the maximal dimension of the Graph is not exceeded
-     *
-     * @param vert
-     *            vertex to be added
-     */
+
     public void addVertex(String vert) {
         // check that there is still space in the arrays
         if (nVertices >= maxVertices) {
@@ -278,21 +259,14 @@ public class myGraph {
         return list;
     }
 
-    /**
-     * return the length of the last computed critical path. Assumes that
-     * criticalPathLength has been set correctly by criticalPath
-     */
+
     public double criticalPathLength() {
 
         return lengthCriticalPath;
     }
 
 
-    /**
-     * Method to determine the end node of the graph.
-     * The only node with edges arriving but not leaving
-     * will be the terminal node.
-     */
+
     private void getEnd() {
         for (int i = 0; i < vertices.length; i++) {
             int from = 0;
@@ -307,25 +281,13 @@ public class myGraph {
             System.out.println(endNode);
     }
 
-    /**
-     * The assumption is made that the first node in the file
-     * will be the starting node. The problem is that given the
-     * array index of the start node has the same value as the
-     * value used to fill the instantiated array (i.e. 0).
-     */
+
     private void getStart() {
         startNode = vertices[0];
         if (print)
             System.out.println(startNode);
     }
 
-    /**
-     * Helper method that finds the index of a vertex given its name
-     *
-     * @param vertex
-     *            name of a vertex in the graph
-     * @return index of this vertex in the vertices array
-     */
     private int findVertex(String vertex) {
         int i1 = -1;
         boolean found = false;

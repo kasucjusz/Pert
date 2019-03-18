@@ -2,43 +2,14 @@ import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import javax.swing.*;
 
-/**
- * Project Evaluation and Review Technique (PERT) static Object.
- *
- * <P>
- * Contains a static main method to read a file path argument supplied at
- * runtime. This file is parsed and a {@link myGraph} object is constructed with
- * the available vertices, edges. Given the different times [(o)ptimistic,
- * (p)essimistic and (m)ost likely] of completion, a normally distributed
- * finishing time is polled randomly from an adjusted Gaussian distribution,
- * with a mean and variance: .
- * <P>
- * mu = (o + 4m + p)/6
- * sigma2 = (p -o)^2/36
- * <P>
- * where o,m,p are optimistic, most likely and pessimistic finishing times.
- *
- * <P>
- * Note that {@link DecimalFormat} is used to format the percentage. Also {@link Random}
- *
- */
 public class PertRandom2 {
 
     // Class Fields
     private static int iters = 0;
     private static int maxiters = 10000;
-    private static DecimalFormat percent;
 
-    /**
-     * Main method for executing the file parsing and PERT solution using the
-     * Graph class.
-     *
-     * @param args
-     *            the file name of the file that holds the graph information
-     * @throws IOException
-     */
+
     public static void main(String[] args) throws IOException {
         double expMean = 0;
         double expVar = 0;
@@ -54,7 +25,6 @@ public class PertRandom2 {
         float numberOfWeeks = reader.nextFloat(); // Scans the next token of the input as an int.
         reader.close();
 
-        double radek=4.78;
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -74,7 +44,7 @@ public class PertRandom2 {
             g.quiet();
 
             // Count the lines to know a priori the number of the vertices
-            FileReader file = new FileReader("C:\\Users\\barto\\Desktop\\PERT\\PertSwing\\src\\case101.dat");
+            FileReader file = new FileReader("C:\\Users\\barto\\Desktop\\PERT\\PertSwing\\src\\case103.dat");
             BufferedReader br = new BufferedReader(file);
             while(br.ready()) {
                 String line = br.readLine();
@@ -85,7 +55,7 @@ public class PertRandom2 {
             br.close();
 
 
-            FileReader file2 = new FileReader("C:\\Users\\barto\\Desktop\\PERT\\PertSwing\\src\\case101.dat");
+            FileReader file2 = new FileReader("C:\\Users\\barto\\Desktop\\PERT\\PertSwing\\src\\case103.dat");
             BufferedReader read = new BufferedReader(file2);
             while(read.ready()){
                 String line = read.readLine();
@@ -111,8 +81,7 @@ public class PertRandom2 {
                 }
             }
 
-            // Print the characteristics of the graph
-//			g.print();
+
 
             // Find the critical path
             g.criticalPath();
@@ -133,13 +102,63 @@ public class PertRandom2 {
         expMean = sum/iters;
         //expVar =  sq_sum/iters - Math.pow(expMean, 2);
 
-        double wynikRadek=(numberOfWeeks-expMean)/(Math.sqrt(radek));
+        double globalTMP=0;
+        String wariancjaKrytyczna=g.verticesCriticalPath();
+
+
+
+
+
+        FileReader file3 = new FileReader("C:\\Users\\barto\\Desktop\\PERT\\PertSwing\\src\\case103.dat");
+        BufferedReader read = new BufferedReader(file3);
+        while(read.ready()){
+            String line = read.readLine();
+            StringTokenizer tokens = new StringTokenizer(line);
+            String name = tokens.nextToken();
+            // Skip the optimistic value
+            double opt = new Double(tokens.nextToken()).doubleValue();
+
+            // Scrape the likely value
+            double likely = new Double(tokens.nextToken()).doubleValue();
+
+            // Skip the pessimistic value
+            double pess = new Double(tokens.nextToken()).doubleValue();
+            // Calculate the mean and variance of the distribution
+            double costVar = Math.pow((pess-opt),2)/36;
+
+
+                if(wariancjaKrytyczna.contains(name))
+                {
+                   // System.out.println(costVar);
+                    globalTMP+=costVar;
+                }
+
+
+
+
+
+
+
+
+
+            }
+
+
+        double wynikRadek=(numberOfWeeks-expMean)/(Math.sqrt(globalTMP));
 
         System.out.println("Experiment's mean value for the critical length paths: "+expMean);
-        System.out.println("Probability of making it on time: "+wynikRadek);
-        System.out.println("Experiment's variance value for the critical length paths: "+expVar);
+        System.out.println("Sum of variances is equal to:  " + globalTMP);
+        System.out.println("X is equal to: "+ wynikRadek);
         System.out.println("Critical Path: "+g.verticesCriticalPath());
-        int index = 0;
+
+
 
     }
-}
+
+
+
+
+
+
+    }
+
