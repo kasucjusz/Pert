@@ -48,8 +48,16 @@ public class PertRandom2 {
         int bins [] = new int[30];
         Random r = new Random(10);
         myGraph g = new myGraph(21,60);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        Scanner reader = new Scanner(System.in);  // Reading from System.in
+        System.out.println("Enter a number o max weeks: ");
+        float numberOfWeeks = reader.nextFloat(); // Scans the next token of the input as an int.
+        reader.close();
+
+        double radek=4.78;
 
 
+//////////////////////////////////////////////////////////////////////////////////////////////////////
         //		 Find the Critical Path and print it out
         while (iters < maxiters ) {
             /**
@@ -121,21 +129,14 @@ public class PertRandom2 {
             read.close();
             file.close();
         }
-        /**
-         * Calculate Mean and Variance of the critical path length in one run of the data.
-         * Normally two passes of the data would be required to first calculate the mean and
-         * then calculate the variance with the formula:
-         *
-         * var = Sum(Xi-Xmu)^2)/N  , for all i belongs to N
-         *
-         * However by decomposing the above formula the equivalent:
-         *
-         * var = (Sum(Xi))^2/N - (Sum/N)^2  , for all i belongs to N
-         */
+
         expMean = sum/iters;
-        expVar =  sq_sum/iters - Math.pow(expMean, 2);
+        //expVar =  sq_sum/iters - Math.pow(expMean, 2);
+
+        double wynikRadek=(numberOfWeeks-expMean)/(Math.sqrt(radek));
 
         System.out.println("Experiment's mean value for the critical length paths: "+expMean);
+        System.out.println("Probability of making it on time: "+wynikRadek);
         System.out.println("Experiment's variance value for the critical length paths: "+expVar);
         System.out.println("Critical Path: "+g.verticesCriticalPath());
         int index = 0;
